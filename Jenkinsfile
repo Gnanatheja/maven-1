@@ -10,6 +10,9 @@ node('master')
     }
     stage('ContinuousDeployment')
     {
+        sshagent(['Tomcat-cred'])
+    }
+    {
 sh 'scp -o StrictHostKeyChecking=no target/*.war ubuntu@172.31.2.175:/opt/tomcat/latest/webapps/'
     }
 

@@ -8,14 +8,13 @@ node('master')
     {
         sh 'mvn package'
     }
-    stage('ContinuousDeployment')
-    {
-        sshagent(['Tomcat-cred'])
-    }
-    {
-sh 'scp -o StrictHostKeyChecking=no target/*.war ubuntu@172.31.2.175:/opt/tomcat/latest/webapps/'
-    }
-
+    stage('Deploy to Tomcat'){
+      sshagent(['Tomcat-cred']) {
+         sh """
+           scp -o StrictHostKeyChecking=no target/*.war ubuntu@172.31.2.175:/home/ubuntu
+           ssh -o StrictHostKeyChecking=no ubuntu@172.31.2.175 'cp -r /home/ubuntu/*.war /opt/tomcat/latest/webapps/'
+         """
+      }
     stage('ContinuousTesting')
     {
         git 'https://github.com/intelliqittrainings/FunctionalTesting.git'

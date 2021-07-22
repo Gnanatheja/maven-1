@@ -10,7 +10,7 @@ node('master')
     }
     stage('ContinuousDeployment')
     {
-sh 'scp /home/ubuntu/.jenkins/workspace/ScriptedPipeline/webapp/target/webapp.war ubuntu@ 172.31.2.175:/var/lib/tomcat8/webapps/testapp.war'
+sh 'scp -o StrictHostKeyChecking=no target/*.war ubuntu@172.31.2.175:/opt/tomcat/latest/webapps/'
     }
 
     stage('ContinuousTesting')
